@@ -9,17 +9,10 @@ public static class ProductEndpoints
     public static void MapProductEndpoints (this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/Product");
-        var random = new Random();
+
         group.MapGet("/", async (ProductDataContext db) =>
         {
-            var r = (decimal)random.NextDouble();
-            var items = await db.Product.ToListAsync();
-
-            foreach (var item in items)
-            {
-                item.Price = item.Price * r;
-            }
-            return items;
+            return await db.Product.ToListAsync();
         })
         .WithName("GetAllProducts")
         .Produces<List<Product>>(StatusCodes.Status200OK);

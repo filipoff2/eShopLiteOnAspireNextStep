@@ -5,8 +5,8 @@ using Products.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-
-builder.AddNpgsqlDbContext<ProductDataContext>("productsdb");
+builder.Services.AddDbContext<ProductDataContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("ProductsContext") ?? throw new InvalidOperationException("Connection string 'ProductsContext' not found.")));
 
 // Add services to the container.
 var app = builder.Build();

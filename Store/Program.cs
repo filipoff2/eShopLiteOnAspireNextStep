@@ -4,7 +4,6 @@ using Store.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
-builder.AddRedisOutputCache("cache");
 
 builder.Services.AddSingleton<ProductService>();
 builder.Services.AddHttpClient<ProductService>(c =>
@@ -20,6 +19,8 @@ builder.Services.AddRazorComponents()
 
 var app = builder.Build();
 
+app.MapDefaultEndpoints();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -32,8 +33,6 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
-app.UseOutputCache();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
